@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tic Tac Toe</title>
+</head>
+<style>
+    body {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: 1fr 1fr 1fr;
+        height: 100vh;
+        width: 100vw;
+    }
+    #row1 {
+        grid-column: 1 / 3;
+        grid-row: 1 / 2;
+        display: flex
+    }
+    #row2 {
+        grid-column: 1 / 3;
+        grid-row: 2 / 3;
+        display: flex
+    }
+    #row3 {
+        grid-column: 1 / 3;
+        grid-row: 3 / 4;
+        display: flex
+    }
+    .cell {
+        flex: 1;
+        border: 1px solid black;
+        font-size: 140px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .winner {
+        background-color: grey;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    button {
+        font-size: 40px;
+    }
+
+    
+</style>
+<body>
+    <div id = "row1">
+        <div class = "cell">
+
+        </div>
+
+        <div class = "cell">
+            
+        </div>
+
+        <div class = "cell">
+            
+        </div>
+    </div>
+
+    <div id = "row2">
+        <div class = "cell">
+
+        </div>
+
+        <div class = "cell">
+            
+        </div>
+
+        <div class = "cell">
+            
+        </div>
+    </div>
+
+    <div id = "row3">
+        <div class = "cell">
+
+        </div>
+
+        <div class = "cell">
+            
+        </div>
+
+        <div class = "cell">
+            
+        </div>
+    </div>
+    <button onclick="restart()">Restart Game</button>
+    <div class = "winner">
+        <h1 id = "announcemnt">X's turn</h1>
+    </div>  
+    
+</body>
+<script>
+    var row1 = document.getElementById("row1");
+    var row2 = document.getElementById("row2");
+    var row3 = document.getElementById("row3");
+    var rows = [row1, row2, row3];
+    var gameWon = false;
+    var announcemnt = document.getElementById("announcemnt");
+    var turn = "X";
+
+    function restart() {
+        // Restarts game
+        turn = "X";
+        gameWon = false;
+        for (let row of rows) {
+            for (let cell of row.children) {
+                cell.innerText = ""
+            }
+        }
+        announcemnt.innerText = turn + "'s' turn"
+
+    }
+
+    function onClick(event) {
+        // When cell has been clicked on
+        if (!gameWon) {
+            if (event.target.innerText == "" && turn == "X") {
+                event.target.innerText = "X";
+                turn = "O"
+            } else if (event.target.innerText == "" && turn == "O") {
+                event.target.innerText = "O";
+                turn = "X"
+            }
+            announcemnt.innerText = turn + "'s turn"
+            checkWin()
+        }
+    }
+
+    for (var i = 0; i < row1.children.length; i++) {
+        row1.children[i].addEventListener("click", onClick)
+    }
+    for (var i = 0; i < row1.children.length; i++) {
+        row2.children[i].addEventListener("click", onClick)
+    }
+    for (var i = 0; i < row1.children.length; i++) {
+        row3.children[i].addEventListener("click", onClick)
+    }
+
+    function checkWin() {
+        // Check if someone has won
+
+        // Check diagonals
+        if (row1.children[0].innerText == row2.children[1].innerText && row1.children[0].innerText == row3.children[2].innerText && row1.children[0].innerText != "") {
+            announcemnt.innerText = row1.children[0].innerText + " won!"
+            gameWon = true;
+        } else if (row1.children[2].innerText == row2.children[1].innerText && row1.children[2].innerText == row3.children[0].innerText && row1.children[2].innerText != "") {
+            announcemnt.innerText = row1.children[2].innerText + " won!"
+            
+            gameWon = true;
+            return;
+        } 
+
+        // Check rows and cols
+        for (let i = 0; i < rows.length; i++) {
+            if (row1.children[i].innerText == row2.children[i].innerText && row1.children[i].innerText == row3.children[i].innerText && row1.children[i].innerText != "") {
+                announcemnt.innerText = row1.children[i].innerText + " won!"
+
+                gameWon = true;
+                return;
+            }
+        }
+        for (let row of rows) {
+            var cells = row.children;
+            if (cells[0].innerText == cells[1].innerText && cells[0].innerText == cells[2].innerText && cells[0].innerText != "") {
+                announcemnt.innerText = cells[0].innerText + " won!"
+                gameWon = true;
+                return;
+            }
+        }
+    }
+
+    
+</script>
+</html>
